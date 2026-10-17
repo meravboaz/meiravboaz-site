@@ -36,7 +36,8 @@
       setTimeout(function () { a.textContent = old; }, 2500);
       return;
     }
-    var target = document.querySelector('#contact a[href^="tel:"]');
+    var target = Array.prototype.find.call(document.querySelectorAll('#contact a[href^="tel:"]'),
+      function (l) { return /054-772-6669/.test(l.textContent); });
     if (!target) return;
     var done = false;
     function highlight() {
