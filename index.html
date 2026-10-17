@@ -21,6 +21,37 @@
                : /^tel:/i.test(href) ? 'AW-18449420494/s4wwCKT8kKAdEM6hr91E' : null;
     if (sendTo) gtag('event', 'conversion', { send_to: sendTo, transport_type: 'beacon' });
   }, true);
+
+  // On computers (mouse, no touch) a phone link can't dial, so instead of trying to open an app:
+  // buttons scroll to the contact section and highlight the number; the number itself is copied.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="tel:"]');
+    if (!a || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    e.preventDefault();
+    e.stopPropagation();
+    if (/054-772-6669/.test(a.textContent)) {
+      var old = a.textContent;
+      if (navigator.clipboard) navigator.clipboard.writeText('054-772-6669').catch(function () {});
+      a.textContent = 'המספר הועתק ✓  054-772-6669';
+      setTimeout(function () { a.textContent = old; }, 2500);
+      return;
+    }
+    var target = document.querySelector('#contact a[href^="tel:"]');
+    if (!target) return;
+    var done = false;
+    function highlight() {
+      if (done) return;
+      done = true;
+      target.style.transition = 'box-shadow .4s, transform .4s';
+      target.style.boxShadow = '0 0 0 4px #E3C07A';
+      target.style.borderRadius = '14px';
+      target.style.transform = 'scale(1.08)';
+      setTimeout(function () { target.style.boxShadow = ''; target.style.transform = ''; }, 3000);
+    }
+    window.addEventListener('scrollend', highlight, { once: true });
+    setTimeout(highlight, 2500);
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, true);
 </script>
 <script src="./support.js"></script>
 <!-- Meta Pixel Code -->
