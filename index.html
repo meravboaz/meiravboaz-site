@@ -11,6 +11,16 @@
   gtag('js', new Date());
 
   gtag('config', 'AW-18449420494');
+
+  // Google Ads conversions: count taps on WhatsApp and phone links (no visible change)
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var sendTo = /wa\.me|whatsapp\.com/i.test(href) ? 'AW-18449420494/_vn4CKH8kKAdEM6hr91E'
+               : /^tel:/i.test(href) ? 'AW-18449420494/s4wwCKT8kKAdEM6hr91E' : null;
+    if (sendTo) gtag('event', 'conversion', { send_to: sendTo, transport_type: 'beacon' });
+  }, true);
 </script>
 <script src="./support.js"></script>
 <!-- Meta Pixel Code -->
