@@ -20,6 +20,8 @@
     var sendTo = /wa\.me|whatsapp\.com/i.test(href) ? 'AW-18449420494/_vn4CKH8kKAdEM6hr91E'
                : /^tel:/i.test(href) ? 'AW-18449420494/s4wwCKT8kKAdEM6hr91E' : null;
     if (sendTo) gtag('event', 'conversion', { send_to: sendTo, transport_type: 'beacon' });
+    // Meta pixel: same taps as a standard Contact event (used to optimize Facebook/Instagram ads)
+    if (sendTo && window.fbq) fbq('track', 'Contact', { content_name: /^tel:/i.test(href) ? 'phone' : 'whatsapp' });
   }, true);
 
   // On computers (mouse, no touch) a phone link can't dial, so instead of trying to open an app:
